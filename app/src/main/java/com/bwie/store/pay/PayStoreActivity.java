@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Button;
+
 import com.bwie.store.R;
 
 /**
@@ -19,12 +21,12 @@ public class PayStoreActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pay_main);
-
-        findViewById(R.id.payV2).setOnClickListener(new View.OnClickListener() {
+        Button button = (Button) findViewById(R.id.payV2);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 调用支付
-                new PayService(PayStoreActivity.this).payV2();
+                new PayService(PayStoreActivity.this).payV2fromLocal();
             }
         });
     }

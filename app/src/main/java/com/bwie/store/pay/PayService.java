@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
 import java.util.Map;
 
 /**
@@ -49,7 +53,7 @@ public class PayService {
     /**
      * 调用支付宝支付
      */
-    public void payV2() {
+    public void payV2fromLocal() {
         if (TextUtils.isEmpty(APPID) || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))) {
             new AlertDialog.Builder(context).setTitle("警告").setMessage("需要配置APPID | RSA_PRIVATE")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -64,6 +68,34 @@ public class PayService {
             //TODO orderInfo的获取必须来自服务端；
             new PayServiceTask(context).execute(orderInfo());
         }
+    }
+
+    public void payV2fromServer() {
+
+        RequestParams params = new RequestParams("请求接口+订单号");
+
+        x.http().get(params, new Callback.CommonCallback<String>() {
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                new PayServiceTask(context).execute(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
     /**
